@@ -68,14 +68,6 @@
     text-decoration: none;
   }
 
-  .logo-mark {
-    width: 30px; height: 30px;
-    background: var(--accent);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
-  }
-
   .nav-badge {
     font-family: var(--mono);
     font-size: 10px;
@@ -89,17 +81,22 @@
 
   .nav-right { display: flex; align-items: center; gap: 12px; }
 
-  .api-key-wrap { position: relative; }
+  /* ---- HERO API KEY ---- */
+  .hero-api-wrap {
+    display: inline-flex; align-items: center;
+    position: relative;
+    margin-top: 1.5rem;
+  }
 
   .api-input {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 13px;
     background: var(--bg3);
     border: 1px solid var(--border2);
-    border-radius: 8px;
+    border-radius: 10px;
     color: var(--text2);
-    padding: 6px 36px 6px 12px;
-    width: 260px;
+    padding: 10px 42px 10px 16px;
+    width: 340px;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
@@ -107,8 +104,8 @@
   .api-input::placeholder { color: var(--text3); }
 
   .api-eye {
-    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-    cursor: pointer; color: var(--text3); font-size: 13px;
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    cursor: pointer; color: var(--text3); font-size: 14px;
     user-select: none;
   }
   .api-eye:hover { color: var(--text2); }
@@ -116,8 +113,10 @@
   /* ---- HERO ---- */
   .hero {
     position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center;
     text-align: center;
-    padding: 5rem 2rem 3rem;
+    padding: 4rem 2rem 3rem;
+    gap: 1.25rem;
   }
 
   .hero-tag {
@@ -128,7 +127,6 @@
     background: rgba(124,109,250,0.08);
     padding: 5px 14px;
     border-radius: 20px;
-    margin-bottom: 1.5rem;
   }
 
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
@@ -169,7 +167,7 @@
 
   @media (max-width: 820px) {
     .app-grid { grid-template-columns: 1fr; }
-    .api-input { width: 180px; }
+    .api-input { width: 90vw; max-width: 340px; }
   }
 
   /* ---- CARDS ---- */
@@ -525,15 +523,10 @@
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">
-    <span class="logo-mark">◈</span>
     Blendr
   </a>
   <div class="nav-right">
     <span class="nav-badge">BETA</span>
-    <div class="api-key-wrap">
-      <input class="api-input" type="password" id="api-key-input" placeholder="sk-ant-... Anthropic API key" />
-      <span class="api-eye" onclick="toggleApiKey()">👁</span>
-    </div>
   </div>
 </nav>
 
@@ -543,8 +536,13 @@
     <span class="dot"></span>
     Powered by Claude Vision
   </div>
-  <h1>Turn any image into<br/><span>a 3D Blender scene</span></h1>
-  <p>Upload a render or photo. Claude analyzes it and generates a ready-to-run Blender Python script.</p>
+  <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+    <span style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--text3); text-transform: uppercase;">API Key</span>
+    <div class="hero-api-wrap">
+      <input class="api-input" type="password" id="api-key-input" placeholder="sk-ant-... Enter your Anthropic API key" />
+      <span class="api-eye" onclick="toggleApiKey()">👁</span>
+    </div>
+  </div>
 </section>
 
 <!-- MAIN APP -->
@@ -751,7 +749,7 @@ function setStatus(type, icon, text) {
 // ---- GENERATE ----
 async function generateScript() {
   const apiKey = getApiKey();
-  if (!apiKey) { showToast('Please enter your Anthropic API key in the top bar', 'error'); return; }
+  if (!apiKey) { showToast('Please enter your Anthropic API key above', 'error'); return; }
   if (!imageBase64) { showToast('Please upload an image first', 'error'); return; }
 
   const blenderVersion = document.getElementById('blender-version').value;
@@ -964,4 +962,3 @@ document.addEventListener('paste', (e) => {
 </script>
 </body>
 </html>
-
